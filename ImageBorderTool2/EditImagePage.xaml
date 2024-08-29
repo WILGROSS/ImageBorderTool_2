@@ -4,9 +4,73 @@
              x:Class="ImageBorderTool2.EditImagePage"
              Title="EditImagePage">
     <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+        <Label Text="Image Border Tool 2.0"
+               Padding="28,8,0,4"
+               BackgroundColor="{StaticResource Secondary}"
+               TextColor="{StaticResource PrimaryText}"
+               FontSize="20" />
+
+        <Grid x:Name="PageContent"
+              BackgroundColor="{StaticResource Primary}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="8" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="8" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            
+            <Grid x:Name="NavigationButtons"
+                  Grid.Column="0"
+                  Margin="0,32,32,0"
+                  HorizontalOptions="End">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+
+                <Button x:Name="HomeButton"
+                        Grid.Column="0"
+                        Text="Home"
+                        CornerRadius="4"
+                        FontSize="16"
+                        BackgroundColor="{StaticResource Accent}"
+                        TextColor="{StaticResource PrimaryText}"
+                        Clicked="OnHomeClicked"
+                        HorizontalOptions="Start"/>
+
+                <Button Grid.Column="2"
+                        Text="Export Images"
+                        CornerRadius="4"
+                        FontSize="16"
+                        BackgroundColor="{StaticResource Accent}"
+                        TextColor="{StaticResource PrimaryText}"
+                        Clicked="OnExportImagesClicked"
+                        HorizontalOptions="End" />
+
+                <Button Grid.Column="4"
+                        Text="Exit"
+                        CornerRadius="4"
+                        FontSize="16"
+                        BackgroundColor="{StaticResource Warning}"
+                        TextColor="{StaticResource PrimaryText}"
+                        Clicked="OnExitClicked" />
+            </Grid>
+
+            <Grid x:Name="MainContent"
+                  Grid.Column="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"
+                    <ColumnDefinition Width="8"
+                    <ColumnDefinition Width="auto"
+                </Grid.ColumnDefinitions>
+                
+            </Grid>
+
+        </Grid>
+
     </VerticalStackLayout>
 </ContentPage>

@@ -3,6 +3,7 @@
 	public partial class MainPage : ContentPage
 	{
 		private int _imageCount = 0;
+		private List<string> _selectedImagePaths = new List<string>(); // Store selected file paths
 
 		public MainPage()
 		{
@@ -37,6 +38,9 @@
 			var removeButtonSize = 24;
 
 			if (file == null) return;
+
+			// Add the file path to the list
+			_selectedImagePaths.Add(file.FullPath);
 
 			var imageSource = ImageSource.FromFile(file.FullPath);
 
@@ -76,7 +80,7 @@
 			Grid.SetRow(removeButton, 0);
 			Grid.SetColumn(removeButton, 1);
 
-			removeButton.Clicked += (s, e) => RemoveImageFromGrid(frame);
+			removeButton.Clicked += (s, e) => RemoveImageFromGrid(frame, file.FullPath);
 
 			ImageGrid.Children.Add(frame);
 
@@ -97,9 +101,10 @@
 			UpdateNextButtonVisibility();
 		}
 
-		private void RemoveImageFromGrid(Frame frame)
+		private void RemoveImageFromGrid(Frame frame, string filePath)
 		{
 			ImageGrid.Children.Remove(frame);
+			_selectedImagePaths.Remove(filePath); // Remove the file path from the list
 			_imageCount--;
 			UpdateImageBoxVisibility();
 			UpdateNextButtonVisibility();
@@ -135,9 +140,10 @@
 			Application.Current.Quit();
 		}
 
-		private void OnContinueClicked(object sender, EventArgs e)
+		private async void OnContinueClicked(object sender, EventArgs e)
 		{
-
+			// Navigate to EditImagePage and pass the list of image paths
+			await Navigation.PushAsync(new EditImagePage(_selectedImagePaths));
 		}
 	}
 }
