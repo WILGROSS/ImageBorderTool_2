@@ -10,7 +10,8 @@
                TextColor="{StaticResource PrimaryText}"
                FontSize="20" />
 
-        <Grid x:Name="PageContent" HorizontalOptions="Center">
+        <Grid x:Name="PageContent"
+              HorizontalOptions="Center">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="8" />
@@ -19,9 +20,9 @@
                 <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
-                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
 
             <Grid x:Name="NavigationButtons"
@@ -96,65 +97,143 @@
                         <Grid BackgroundColor="{StaticResource Primary}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="auto" />
-                                <RowDefinition Height="8" />
+                                <RowDefinition Height="32" />
                                 <RowDefinition Height="auto" />
                                 <RowDefinition Height="8" />
                                 <RowDefinition Height="auto" />
                             </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto" />
-                                <ColumnDefinition Width="8" />
-                                <ColumnDefinition Width="100" />
-                                <ColumnDefinition Width="8" />
-                                <ColumnDefinition Width="auto" />
-                            </Grid.ColumnDefinitions>
 
                             <!--Border Thickness-->
-                            <Label Grid.Row="0"
-                                   Grid.Column="0"
-                                   Text="Border Thickness"
-                                   FontSize="16"
-                                   VerticalOptions="Center"
-                                   TextColor="{StaticResource PrimaryText}" />
+                            <Grid Grid.Row="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="8" />
+                                    <ColumnDefinition Width="200" />
+                                    <ColumnDefinition Width="8" />
+                                    <ColumnDefinition Width="auto" />
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="0"
+                                       Text="Border Thickness"
+                                       FontSize="16"
+                                       VerticalOptions="Center"
+                                       TextColor="{StaticResource PrimaryText}" />
 
-                            <Slider x:Name="BorderThicknessSlider"
-                                    Grid.Row="0"
-                                    Grid.Column="2"
-                                    VerticalOptions="Center"
-                                    MaximumTrackColor="{StaticResource Secondary}"
-                                    MinimumTrackColor="{StaticResource Accent}"
-                                    ThumbColor="{StaticResource Accent}"
-                                    Minimum="1"
-                                    Maximum="100"
-                                    ValueChanged="OnBorderThicknessSliderValueChanged" />
+                                <Slider x:Name="BorderThicknessSlider"
+                                        Grid.Column="2"
+                                        VerticalOptions="Center"
+                                        MaximumTrackColor="{StaticResource Secondary}"
+                                        MinimumTrackColor="{StaticResource Accent}"
+                                        ThumbColor="{StaticResource Accent}"
+                                        Minimum="1"
+                                        Maximum="100"
+                                        ValueChanged="OnBorderThicknessSliderValueChanged" />
 
-                            <Entry x:Name="BorderThicknessEntry"
-                                   Grid.Row="0"
-                                   Grid.Column="4"
-                                   VerticalOptions="Center"
-                                   BackgroundColor="{StaticResource Secondary}"
-                                   TextColor="{StaticResource PrimaryText}"
-                                   Text="{Binding Source={x:Reference BorderThicknessSlider}, Path=Value, StringFormat='{0:F1}'}"
-                                   Keyboard="Numeric"
-                                   Completed="OnBorderThicknessEntryCompleted" />
+                                <Entry x:Name="BorderThicknessEntry"
+                                       Grid.Column="4"
+                                       VerticalOptions="Center"
+                                       BackgroundColor="{StaticResource Secondary}"
+                                       TextColor="{StaticResource PrimaryText}"
+                                       Text="{Binding Source={x:Reference BorderThicknessSlider}, Path=Value, StringFormat='{0:F0}'}"
+                                       Keyboard="Numeric"
+                                       Completed="OnBorderThicknessEntryCompleted" />
+                            </Grid>
 
                             <!--Border Color-->
-                            <Label Grid.Row="2"
-                                   Grid.Column="0"
-                                   Text="Border Color"
-                                   FontSize="16"
-                                   VerticalOptions="Center"
-                                   TextColor="{StaticResource PrimaryText}" />
+                            <Grid x:Name="ColorPicker"
+                                  Grid.Row="2">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="8" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="8" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="8" />
+                                    <RowDefinition Height="auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="8" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="8" />
+                                    <ColumnDefinition Width="26" />
+                                </Grid.ColumnDefinitions>
 
-                            <Entry x:Name="BorderColorEntry"
-                                   Grid.Row="2"
-                                   Grid.Column="4"
-                                   VerticalOptions="Center"
-                                   BackgroundColor="{StaticResource Secondary}"
-                                   TextColor="{StaticResource PrimaryText}"
-                                   Text="{Binding Source={x:Reference BorderThicknessSlider}, Path=Value, StringFormat='{0:F1}'}"
-                                   Keyboard="Text"
-                                   Completed="OnBorderThicknessEntryCompleted" />
+                                <BoxView x:Name="ColorPreview"
+                                         Grid.Row="0"
+                                         Grid.Column="2"/>
+                                <Entry x:Name="RgbValue"
+                                       Grid.Row="0"
+                                       Grid.Column="0"
+                                       BackgroundColor="{StaticResource Secondary}"
+                                       TextColor="{StaticResource PrimaryText}" />
+
+                                <Label Grid.Row="2"
+                                       Grid.Column="0"
+                                       Text="Red"
+                                       FontSize="16"
+                                       VerticalOptions="Center"
+                                       TextColor="{StaticResource PrimaryText}" />
+                                <Slider x:Name="RedSlider"
+                                        Grid.Row="2"
+                                        Grid.Column="2"
+                                        Minimum="0"
+                                        Maximum="255"
+                                        VerticalOptions="Center"
+                                        MaximumTrackColor="{StaticResource Secondary}"
+                                        MinimumTrackColor="{StaticResource Warning}"
+                                        ThumbColor="{StaticResource Warning}"
+                                        ValueChanged="OnColorValueChanged" />
+                                <Label Grid.Row="2"
+                                       Grid.Column="4"
+                                       Text="{Binding Source={x:Reference GreenSlider}, Path=Value, StringFormat='{0:F0}'}"
+                                       FontSize="16"
+                                       TextColor="{StaticResource PrimaryText}" />
+
+                                <Label Grid.Row="4"
+                                       Grid.Column="0"
+                                       Text="Green"
+                                       FontSize="16"
+                                       VerticalOptions="Center"
+                                       TextColor="{StaticResource PrimaryText}" />
+                                <Slider x:Name="GreenSlider"
+                                        Grid.Row="4"
+                                        Grid.Column="2"
+                                        Minimum="0"
+                                        Maximum="255"
+                                        VerticalOptions="Center"
+                                        MaximumTrackColor="{StaticResource Secondary}"
+                                        MinimumTrackColor="{StaticResource Success}"
+                                        ThumbColor="{StaticResource Success}"
+                                        ValueChanged="OnColorValueChanged" />
+                                <Label Grid.Row="4"
+                                       Grid.Column="4"
+                                       Text="{Binding Source={x:Reference RedSlider}, Path=Value, StringFormat='{0:F0}'}"
+                                       FontSize="16"
+                                       TextColor="{StaticResource PrimaryText}" />
+
+                                <Label Grid.Row="6"
+                                       Grid.Column="0"
+                                       Text="Blue"
+                                       FontSize="16"
+                                       VerticalOptions="Center"
+                                       TextColor="{StaticResource PrimaryText}" />
+                                <Slider x:Name="BlueSlider"
+                                        Grid.Row="6"
+                                        Grid.Column="2"
+                                        Minimum="0"
+                                        Maximum="255"
+                                        VerticalOptions="Center"
+                                        MaximumTrackColor="{StaticResource Secondary}"
+                                        MinimumTrackColor="{StaticResource Accent}"
+                                        ThumbColor="{StaticResource Accent}"
+                                        ValueChanged="OnColorValueChanged" />
+                                <Label Grid.Row="6"
+                                       Grid.Column="4"
+                                       Text="{Binding Source={x:Reference BlueSlider}, Path=Value, StringFormat='{0:F0}'}" 
+                                       FontSize="16"
+                                       TextColor="{StaticResource PrimaryText}"/>
+
+                            </Grid>
                         </Grid>
                     </Frame>
                 </Grid>

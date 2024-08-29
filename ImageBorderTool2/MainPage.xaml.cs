@@ -3,7 +3,7 @@
 	public partial class MainPage : ContentPage
 	{
 		private int _imageCount = 0;
-		private List<string> _selectedImagePaths = new List<string>(); // Store selected file paths
+		private List<string> _selectedImagePaths = new List<string>();
 
 		public MainPage()
 		{
@@ -142,7 +142,7 @@
 
 		private async void OnContinueClicked(object sender, EventArgs e)
 		{
-			await Navigation.PushAsync(new EditImagePage(_selectedImagePaths));
+			await Navigation.PushAsync(new EditImagePage(_selectedImagePaths, 0));
 		}
 	}
 }
