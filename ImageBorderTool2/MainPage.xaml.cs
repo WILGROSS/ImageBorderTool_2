@@ -34,7 +34,6 @@
 
 		private void AddImageToGrid(FileResult file)
 		{
-			var imageFrameSize = 360;
 			var removeButtonSize = 24;
 
 			if (file == null) return;
@@ -68,7 +67,6 @@
 				HasShadow = false,
 				Margin = new Thickness(8),
 				Padding = 0,
-				HeightRequest = imageFrameSize,
 				Content = new Grid
 				{
 					Children = { image, removeButton }
@@ -96,6 +94,7 @@
 			_imageCount++;
 
 			UpdateImageBoxVisibility();
+			UpdateNextButtonVisibility();
 		}
 
 		private void RemoveImageFromGrid(Frame frame)
@@ -103,6 +102,7 @@
 			ImageGrid.Children.Remove(frame);
 			_imageCount--;
 			UpdateImageBoxVisibility();
+			UpdateNextButtonVisibility();
 			UpdateImageGrid();
 		}
 
@@ -128,11 +128,16 @@
 		}
 
 		private void UpdateImageBoxVisibility() => ImageBox.IsVisible = _imageCount > 0;
+		private void UpdateNextButtonVisibility() => ContinueButton.IsVisible = _imageCount > 0;
 
 		private void OnExitClicked(object sender, EventArgs e)
 		{
 			Application.Current.Quit();
 		}
-	}
 
+		private void OnContinueClicked(object sender, EventArgs e)
+		{
+
+		}
+	}
 }

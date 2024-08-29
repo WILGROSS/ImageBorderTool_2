@@ -18,9 +18,22 @@
                     <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="8" />
                     <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="0"
+                <Button x:Name="ContinueButton"
+                        Grid.Column="0"
+                        Text="Continue"
+                        CornerRadius="4"
+                        FontSize="16"
+                        BackgroundColor="{StaticResource Accent}"
+                        TextColor="{StaticResource PrimaryText}"
+                        Clicked="OnContinueClicked"
+                        HorizontalOptions="Start"
+                        IsVisible="False"/>
+
+                <Button Grid.Column="2"
                         Text="Add Images"
                         CornerRadius="4"
                         FontSize="16"
@@ -29,7 +42,7 @@
                         Clicked="OnAddImagesClicked"
                         HorizontalOptions="End" />
 
-                <Button Grid.Column="2"
+                <Button Grid.Column="4"
                         Text="Exit"
                         CornerRadius="4"
                         FontSize="16"
@@ -52,6 +65,7 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                 </Grid>
+
             </Frame>
         </VerticalStackLayout>
     </ScrollView>
