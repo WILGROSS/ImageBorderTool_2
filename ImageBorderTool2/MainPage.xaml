@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ImageBorderTool2.MainPage"
+             BackgroundColor="{StaticResource Primary}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="0">
+            <Label Text="Image Border Tool 2.0"
+                   Padding="28,8,0,4"
+                   BackgroundColor="{StaticResource Secondary}"
+                   TextColor="{StaticResource PrimaryText}"
+                   FontSize="20" />
+
+            <Grid Margin="0,32,32,0"
+                  HorizontalOptions="End">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0"
+                        Text="Add Images"
+                        CornerRadius="4"
+                        FontSize="16"
+                        BackgroundColor="{StaticResource Accent}"
+                        TextColor="{StaticResource PrimaryText}"
+                        Clicked="OnAddImagesClicked"
+                        HorizontalOptions="End" />
+
+                <Button Grid.Column="2"
+                        Text="Exit"
+                        CornerRadius="4"
+                        FontSize="16"
+                        BackgroundColor="{StaticResource Warning}"
+                        TextColor="{StaticResource PrimaryText}"
+                        Clicked="OnExitClicked"/>
+            </Grid>
+
+            <Frame x:Name="ImageBox"
+                   Margin="32,8,32,0"
+                   BackgroundColor="{StaticResource Gray600}"
+                   CornerRadius="4"
+                   IsVisible="False">
+
+                <Grid x:Name="ImageGrid"
+                      VerticalOptions="FillAndExpand">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                </Grid>
+            </Frame>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
