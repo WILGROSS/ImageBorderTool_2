@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ImageBorderTool2.EditImagePage"
-             Title="EditImagePage">
+             BackgroundColor="{StaticResource Primary}">
     <VerticalStackLayout>
         <Label Text="Image Border Tool 2.0"
                Padding="28,8,0,4"
@@ -10,8 +10,7 @@
                TextColor="{StaticResource PrimaryText}"
                FontSize="20" />
 
-        <Grid x:Name="PageContent"
-              BackgroundColor="{StaticResource Primary}">
+        <Grid x:Name="PageContent" HorizontalOptions="Center">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="8" />
@@ -19,10 +18,16 @@
                 <RowDefinition Height="8" />
                 <RowDefinition Height="auto" />
             </Grid.RowDefinitions>
-            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+
             <Grid x:Name="NavigationButtons"
-                  Grid.Column="0"
-                  Margin="0,32,32,0"
+                  Grid.Row="0"
+                  Grid.Column="1"
+                  Margin="0,32,0,0"
                   HorizontalOptions="End">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="auto" />
@@ -40,7 +45,7 @@
                         BackgroundColor="{StaticResource Accent}"
                         TextColor="{StaticResource PrimaryText}"
                         Clicked="OnHomeClicked"
-                        HorizontalOptions="Start"/>
+                        HorizontalOptions="Start" />
 
                 <Button Grid.Column="2"
                         Text="Export Images"
@@ -60,15 +65,100 @@
                         Clicked="OnExitClicked" />
             </Grid>
 
-            <Grid x:Name="MainContent"
-                  Grid.Column="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"
-                    <ColumnDefinition Width="8"
-                    <ColumnDefinition Width="auto"
-                </Grid.ColumnDefinitions>
-                
-            </Grid>
+            <Frame Grid.Row="2"
+                   Grid.Column="1"
+                   BackgroundColor="{StaticResource Secondary}"
+                   Padding="8">
+
+                <Grid x:Name="MainContent"
+                      HorizontalOptions="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="8" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <Frame x:Name="PreviewFrame"
+                           Grid.Column="0"
+                           WidthRequest="480"
+                           HeightRequest="480"
+                           CornerRadius="4"
+                           BackgroundColor="LightPink"
+                           Padding="0">
+                        <Image x:Name="CurrentImage"
+                               Aspect="AspectFit"
+                               Source="dotnet_bot.png"
+                               BackgroundColor="White" />
+                    </Frame>
+                    <Frame x:Name="Settings"
+                           Grid.Column="2"
+                           BackgroundColor="{StaticResource Primary}">
+                        <Grid BackgroundColor="{StaticResource Primary}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="8" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="8" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto" />
+                                <ColumnDefinition Width="8" />
+                                <ColumnDefinition Width="100" />
+                                <ColumnDefinition Width="8" />
+                                <ColumnDefinition Width="auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <!--Border Thickness-->
+                            <Label Grid.Row="0"
+                                   Grid.Column="0"
+                                   Text="Border Thickness"
+                                   FontSize="16"
+                                   VerticalOptions="Center"
+                                   TextColor="{StaticResource PrimaryText}" />
+
+                            <Slider x:Name="BorderThicknessSlider"
+                                    Grid.Row="0"
+                                    Grid.Column="2"
+                                    VerticalOptions="Center"
+                                    MaximumTrackColor="{StaticResource Secondary}"
+                                    MinimumTrackColor="{StaticResource Accent}"
+                                    ThumbColor="{StaticResource Accent}"
+                                    Minimum="1"
+                                    Maximum="100"
+                                    ValueChanged="OnBorderThicknessSliderValueChanged" />
+
+                            <Entry x:Name="BorderThicknessEntry"
+                                   Grid.Row="0"
+                                   Grid.Column="4"
+                                   VerticalOptions="Center"
+                                   BackgroundColor="{StaticResource Secondary}"
+                                   TextColor="{StaticResource PrimaryText}"
+                                   Text="{Binding Source={x:Reference BorderThicknessSlider}, Path=Value, StringFormat='{0:F1}'}"
+                                   Keyboard="Numeric"
+                                   Completed="OnBorderThicknessEntryCompleted" />
+
+                            <!--Border Color-->
+                            <Label Grid.Row="2"
+                                   Grid.Column="0"
+                                   Text="Border Color"
+                                   FontSize="16"
+                                   VerticalOptions="Center"
+                                   TextColor="{StaticResource PrimaryText}" />
+
+                            <Entry x:Name="BorderColorEntry"
+                                   Grid.Row="2"
+                                   Grid.Column="4"
+                                   VerticalOptions="Center"
+                                   BackgroundColor="{StaticResource Secondary}"
+                                   TextColor="{StaticResource PrimaryText}"
+                                   Text="{Binding Source={x:Reference BorderThicknessSlider}, Path=Value, StringFormat='{0:F1}'}"
+                                   Keyboard="Text"
+                                   Completed="OnBorderThicknessEntryCompleted" />
+                        </Grid>
+                    </Frame>
+                </Grid>
+            </Frame>
 
         </Grid>
 

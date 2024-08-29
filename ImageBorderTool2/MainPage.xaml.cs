@@ -142,7 +142,6 @@
 
 		private async void OnContinueClicked(object sender, EventArgs e)
 		{
-			// Navigate to EditImagePage and pass the list of image paths
 			await Navigation.PushAsync(new EditImagePage(_selectedImagePaths));
 		}
 	}
