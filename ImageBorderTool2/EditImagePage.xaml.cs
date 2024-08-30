@@ -1,3 +1,4 @@
+using Microsoft.Maui.Graphics;
 using SkiaSharp;
 
 namespace ImageBorderTool2;
@@ -12,6 +13,7 @@ public partial class EditImagePage : ContentPage
     private int _defaultRed = 255;
     private int _defaultGreen = 255;
     private int _defaultBlue = 255;
+
     public EditImagePage(List<string> imagePaths, int currentImage)
     {
         InitializeComponent();
@@ -42,7 +44,7 @@ public partial class EditImagePage : ContentPage
     private void SetDefaultValues()
     {
         BorderThicknessSlider.Value = _defaultThickness;
-        BorderThicknessLabel.SetValue(XProperty, _defaultThickness);
+        BorderThicknessLabel.Text = $"{_defaultThickness} px";
         PreviewFrame.Padding = new Thickness(_defaultThickness);
 
         RedSlider.Value = _defaultRed;
@@ -51,11 +53,71 @@ public partial class EditImagePage : ContentPage
 
         ColorPreview.Color = Color.FromRgb(_defaultRed, _defaultGreen, _defaultBlue);
         PreviewFrame.BackgroundColor = ColorPreview.Color;
+
+        UpdateColorValueEntry();
     }
 
-    private void UpdateBorderThickness()
+    private void UpdateColorValueEntry()
     {
+        ColorValueEntry.Text = $"{(int)RedSlider.Value},{(int)GreenSlider.Value},{(int)BlueSlider.Value}";
+    }
 
+    private void OnColorValueEntryTextChanged(object sender, TextChangedEventArgs e)
+    {
+        if (string.IsNullOrWhiteSpace(e.NewTextValue))
+            return;
+
+        var parts = e.NewTextValue.Split(',');
+        if (parts.Length == 3 &&
+            int.TryParse(parts[0], out int red) &&
+            int.TryParse(parts[1], out int green) &&
+            int.TryParse(parts[2], out int blue))
+        {
+            // Ensure RGB values are within bounds
+            red = Math.Clamp(red, 0, 255);
+            green = Math.Clamp(green, 0, 255);
+            blue = Math.Clamp(blue, 0, 255);
+
+            // Update sliders and color preview
+            RedSlider.Value = red;
+            GreenSlider.Value = green;
+            BlueSlider.Value = blue;
+
+            ColorPreview.Color = Color.FromRgb(red, green, blue);
+            PreviewFrame.BackgroundColor = ColorPreview.Color;
+        }
+    }
+
+    private void OnColorValueSliderChanged(object sender, ValueChangedEventArgs e)
+    {
+        int red = (int)RedSlider.Value;
+        int green = (int)GreenSlider.Value;
+        int blue = (int)BlueSlider.Value;
+
+        ColorPreview.Color = Color.FromRgb(red, green, blue);
+        PreviewFrame.BackgroundColor = ColorPreview.Color;
+
+        UpdateColorValueEntry();
+    }
+
+    private void OnBorderThicknessSliderValueChanged(object sender, ValueChangedEventArgs e)
+    {
+        if (sender is Slider slider)
+        {
+            if (_imageWidth > _imageHeight)
+            {
+                var padding = new Thickness(slider.Value, 0);
+                PreviewFrame.Padding = padding;
+                return;
+            }
+            else if (_imageWidth < _imageHeight)
+            {
+                var padding = new Thickness(0, slider.Value);
+                PreviewFrame.Padding = padding;
+                return;
+            }
+            PreviewFrame.Padding = new Thickness(slider.Value);
+        }
     }
 
     private async void OnHomeClicked(object sender, EventArgs e)
@@ -71,40 +133,5 @@ public partial class EditImagePage : ContentPage
     private void OnExitClicked(object sender, EventArgs e)
     {
         Application.Current.Quit();
-    }
-
-    private void OnBorderThicknessSliderValueChanged(object sender, ValueChangedEventArgs e)
-    {
-        if (sender is Slider slider)
-        {
-            if (_imageWidth > _imageHeight)
-            {
-                var padding = new Thickness(slider.Value, 0);
-                PreviewFrame.Padding = padding;
-                return;
-            }
-            else if ((_imageWidth < _imageHeight))
-            {
-                var padding = new Thickness(0, slider.Value);
-                PreviewFrame.Padding = padding;
-                return;
-            }
-            PreviewFrame.Padding = new Thickness(slider.Value);
-        }
-    }
-
-    private void OnBorderColorEntryCompleted(object sender, EventArgs e)
-    {
-
-    }
-
-    private void OnColorValueChanged(object sender, ValueChangedEventArgs e)
-    {
-        int red = (int)RedSlider.Value;
-        int green = (int)GreenSlider.Value;
-        int blue = (int)BlueSlider.Value;
-
-        ColorPreview.Color = Color.FromRgb(red, green, blue);
-        PreviewFrame.BackgroundColor = ColorPreview.Color;
     }
 }

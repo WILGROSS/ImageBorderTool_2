@@ -156,12 +156,18 @@
 
                                 <BoxView x:Name="ColorPreview"
                                          Grid.Row="0"
-                                         Grid.Column="2"/>
-                                <Entry x:Name="RgbValue"
+                                         Grid.Column="2"
+                                         CornerRadius="4"/>
+                                <Entry x:Name="ColorValueEntry"
                                        Grid.Row="0"
                                        Grid.Column="0"
+                                       WidthRequest="95"
+                                       HorizontalTextAlignment="Start"
+                                       HorizontalOptions="Fill"
                                        BackgroundColor="{StaticResource Secondary}"
-                                       TextColor="{StaticResource PrimaryText}" />
+                                       TextColor="{StaticResource PrimaryText}"
+                                       TextChanged="OnColorValueEntryTextChanged" />
+
 
                                 <Label Grid.Row="2"
                                        Grid.Column="0"
@@ -178,8 +184,9 @@
                                         MaximumTrackColor="{StaticResource Secondary}"
                                         MinimumTrackColor="{StaticResource Warning}"
                                         ThumbColor="{StaticResource Warning}"
-                                        ValueChanged="OnColorValueChanged" />
-                                <Label Grid.Row="2"
+                                        ValueChanged="OnColorValueSliderChanged" />
+                                <Label x:Name="RedSliderLabel"
+                                       Grid.Row="2"
                                        Grid.Column="4"
                                        HorizontalTextAlignment="End"
                                        Text="{Binding Source={x:Reference RedSlider}, Path=Value, StringFormat='{0:F0}'}"
@@ -201,8 +208,9 @@
                                         MaximumTrackColor="{StaticResource Secondary}"
                                         MinimumTrackColor="{StaticResource Success}"
                                         ThumbColor="{StaticResource Success}"
-                                        ValueChanged="OnColorValueChanged" />
-                                <Label Grid.Row="4"
+                                        ValueChanged="OnColorValueSliderChanged" />
+                                <Label x:Name="GreenSliderLabel"
+                                       Grid.Row="4"
                                        Grid.Column="4"
                                        HorizontalTextAlignment="End"
                                        Text="{Binding Source={x:Reference GreenSlider}, Path=Value, StringFormat='{0:F0}'}"
@@ -224,8 +232,9 @@
                                         MaximumTrackColor="{StaticResource Secondary}"
                                         MinimumTrackColor="{StaticResource Accent}"
                                         ThumbColor="{StaticResource Accent}"
-                                        ValueChanged="OnColorValueChanged" />
-                                <Label Grid.Row="6"
+                                        ValueChanged="OnColorValueSliderChanged" />
+                                <Label x:Name="BlueSliderLabel"
+                                       Grid.Row="6"
                                        Grid.Column="4"
                                        HorizontalTextAlignment="End"
                                        Text="{Binding Source={x:Reference BlueSlider}, Path=Value, StringFormat='{0:F0}'}" 
