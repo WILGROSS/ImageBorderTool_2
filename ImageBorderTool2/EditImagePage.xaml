@@ -158,7 +158,7 @@
                                          Grid.Row="0"
                                          Grid.Column="2"
                                          CornerRadius="4"/>
-                                <Entry x:Name="ColorValueEntry"
+                                <Editor x:Name="ColorValueEntry"
                                        Grid.Row="0"
                                        Grid.Column="0"
                                        WidthRequest="95"
@@ -166,8 +166,8 @@
                                        HorizontalOptions="Fill"
                                        BackgroundColor="{StaticResource Secondary}"
                                        TextColor="{StaticResource PrimaryText}"
+                                       FontFamily="monospace"
                                        TextChanged="OnColorValueEntryTextChanged" />
-
 
                                 <Label Grid.Row="2"
                                        Grid.Column="0"
