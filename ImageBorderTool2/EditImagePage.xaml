@@ -121,7 +121,7 @@
                                         MaximumTrackColor="{StaticResource Secondary}"
                                         MinimumTrackColor="{StaticResource Accent}"
                                         ThumbColor="{StaticResource Accent}"
-                                        Minimum="1"
+                                        Minimum="0"
                                         Maximum="100"
                                         ValueChanged="OnBorderThicknessSliderValueChanged" />
 
