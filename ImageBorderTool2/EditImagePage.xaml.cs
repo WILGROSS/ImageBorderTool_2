@@ -2,75 +2,80 @@ namespace ImageBorderTool2;
 
 public partial class EditImagePage : ContentPage
 {
-	private int _defaultThickness = 12;
-	private int _defaultRed = 255;
-	private int _defaultGreen = 255;
-	private int _defaultBlue = 255;
-	public EditImagePage(List<string> imagePaths, int currentImage)
-	{
-		InitializeComponent();
+    private int _currentImage;
+    private int _defaultThickness = 12;
+    private int _defaultRed = 255;
+    private int _defaultGreen = 255;
+    private int _defaultBlue = 255;
+    public EditImagePage(List<string> imagePaths, int currentImage)
+    {
+        InitializeComponent();
 
-		if (currentImage == 0)
-			SetDefaultValues();
-	}
+        _currentImage = currentImage;
 
-	private void SetDefaultValues()
-	{
-		RedSlider.Value = _defaultRed;
-		GreenSlider.Value = _defaultGreen;
-		BlueSlider.Value = _defaultBlue;
+        if (currentImage == 0)
+            SetDefaultValues();
+    }
 
-		ColorPreview.Color = Color.FromRgb(_defaultRed, _defaultGreen, _defaultBlue);
-	}
+    private void SetDefaultValues()
+    {
+        RedSlider.Value = _defaultRed;
+        GreenSlider.Value = _defaultGreen;
+        BlueSlider.Value = _defaultBlue;
 
-	private async void OnHomeClicked(object sender, EventArgs e)
-	{
-		await Navigation.PushAsync(new MainPage());
-	}
+        ColorPreview.Color = Color.FromRgb(_defaultRed, _defaultGreen, _defaultBlue);
+        PreviewFrame.BackgroundColor = ColorPreview.Color;
+    }
 
-	private void OnExportImagesClicked(object sender, EventArgs e)
-	{
+    private async void OnHomeClicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new MainPage());
+    }
 
-	}
+    private void OnExportImagesClicked(object sender, EventArgs e)
+    {
 
-	private void OnExitClicked(object sender, EventArgs e)
-	{
-		Application.Current.Quit();
-	}
+    }
 
-	private void OnBorderThicknessSliderValueChanged(object sender, ValueChangedEventArgs e)
-	{
+    private void OnExitClicked(object sender, EventArgs e)
+    {
+        Application.Current.Quit();
+    }
 
-	}
+    private void OnBorderThicknessSliderValueChanged(object sender, ValueChangedEventArgs e)
+    {
 
-	private void OnBorderThicknessEntryCompleted(object sender, EventArgs e)
-	{
-		if (sender is Entry entry && double.TryParse(entry.Text, out double value))
-		{
-			if (value < BorderThicknessSlider.Minimum)
-			{
-				value = BorderThicknessSlider.Minimum;
-			}
-			else if (value > BorderThicknessSlider.Maximum)
-			{
-				value = BorderThicknessSlider.Maximum;
-			}
+    }
 
-			BorderThicknessSlider.Value = value;
-		}
-	}
+    private void OnBorderThicknessEntryCompleted(object sender, EventArgs e)
+    {
+        if (sender is Entry entry && double.TryParse(entry.Text, out double value))
+        {
+            if (value < BorderThicknessSlider.Minimum)
+            {
+                value = BorderThicknessSlider.Minimum;
+            }
+            else if (value > BorderThicknessSlider.Maximum)
+            {
+                value = BorderThicknessSlider.Maximum;
+            }
 
-	private void OnBorderColorEntryCompleted(object sender, EventArgs e)
-	{
+            BorderThicknessSlider.Value = value;
+        }
+    }
 
-	}
+    private void OnBorderColorEntryCompleted(object sender, EventArgs e)
+    {
 
-	private void OnColorValueChanged(object sender, ValueChangedEventArgs e)
-	{
-		int red = (int)RedSlider.Value;
-		int green = (int)GreenSlider.Value;
-		int blue = (int)BlueSlider.Value;
+    }
 
-		ColorPreview.Color = Color.FromRgb(red, green, blue);
-	}
+    private void OnColorValueChanged(object sender, ValueChangedEventArgs e)
+    {
+        int red = (int)RedSlider.Value;
+        int green = (int)GreenSlider.Value;
+        int blue = (int)BlueSlider.Value;
+
+        ColorPreview.Color = Color.FromRgb(red, green, blue);
+        PreviewFrame.BackgroundColor = ColorPreview.Color;
+    }
 }

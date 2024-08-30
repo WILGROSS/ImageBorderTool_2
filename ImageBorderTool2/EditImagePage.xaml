@@ -88,8 +88,7 @@
                            Padding="0">
                         <Image x:Name="CurrentImage"
                                Aspect="AspectFit"
-                               Source="dotnet_bot.png"
-                               BackgroundColor="White" />
+                               Source="dotnet_bot.png"/>
                     </Frame>
                     <Frame x:Name="Settings"
                            Grid.Column="2"
