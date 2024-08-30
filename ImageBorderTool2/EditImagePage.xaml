@@ -79,17 +79,15 @@
                         <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
 
-                    <Frame x:Name="PreviewFrame"
+                    <Border x:Name="PreviewFrame"
                            Grid.Column="0"
                            WidthRequest="480"
-                           HeightRequest="480"
-                           CornerRadius="4"
-                           BackgroundColor="LightPink"
-                           Padding="0">
+                            HeightRequest="480"
+                           BackgroundColor="LightPink">
                         <Image x:Name="CurrentImage"
                                Aspect="AspectFit"
                                Source="dotnet_bot.png"/>
-                    </Frame>
+                    </Border>
                     <Frame x:Name="Settings"
                            Grid.Column="2"
                            BackgroundColor="{StaticResource Primary}">
@@ -127,14 +125,12 @@
                                         Maximum="100"
                                         ValueChanged="OnBorderThicknessSliderValueChanged" />
 
-                                <Entry x:Name="BorderThicknessEntry"
-                                       Grid.Column="4"
-                                       VerticalOptions="Center"
-                                       BackgroundColor="{StaticResource Secondary}"
-                                       TextColor="{StaticResource PrimaryText}"
-                                       Text="{Binding Source={x:Reference BorderThicknessSlider}, Path=Value, StringFormat='{0:F0}'}"
-                                       Keyboard="Numeric"
-                                       Completed="OnBorderThicknessEntryCompleted" />
+                                <Label x:Name="BorderThicknessLabel"
+                                        Grid.Column="4"
+                                        Text="{Binding Source={x:Reference BorderThicknessSlider}, Path=Value, StringFormat='{0:F0}'}" 
+                                        FontSize="16"
+                                        TextColor="{StaticResource PrimaryText}"/>
+
                             </Grid>
 
                             <!--Border Color-->
@@ -184,7 +180,7 @@
                                         ValueChanged="OnColorValueChanged" />
                                 <Label Grid.Row="2"
                                        Grid.Column="4"
-                                       Text="{Binding Source={x:Reference GreenSlider}, Path=Value, StringFormat='{0:F0}'}"
+                                       Text="{Binding Source={x:Reference RedSlider}, Path=Value, StringFormat='{0:F0}'}"
                                        FontSize="16"
                                        TextColor="{StaticResource PrimaryText}" />
 
@@ -206,7 +202,7 @@
                                         ValueChanged="OnColorValueChanged" />
                                 <Label Grid.Row="4"
                                        Grid.Column="4"
-                                       Text="{Binding Source={x:Reference RedSlider}, Path=Value, StringFormat='{0:F0}'}"
+                                       Text="{Binding Source={x:Reference GreenSlider}, Path=Value, StringFormat='{0:F0}'}"
                                        FontSize="16"
                                        TextColor="{StaticResource PrimaryText}" />
 

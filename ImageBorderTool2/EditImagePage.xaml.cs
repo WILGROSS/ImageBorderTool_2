@@ -28,12 +28,21 @@ public partial class EditImagePage : ContentPage
 
     private void SetDefaultValues()
     {
+        BorderThicknessSlider.Value = _defaultThickness;
+        BorderThicknessLabel.SetValue(XProperty, _defaultThickness);
+        PreviewFrame.Padding = new Thickness(_defaultThickness);
+
         RedSlider.Value = _defaultRed;
         GreenSlider.Value = _defaultGreen;
         BlueSlider.Value = _defaultBlue;
 
         ColorPreview.Color = Color.FromRgb(_defaultRed, _defaultGreen, _defaultBlue);
         PreviewFrame.BackgroundColor = ColorPreview.Color;
+    }
+
+    private void UpdateBorderThickness()
+    {
+
     }
 
     private async void OnHomeClicked(object sender, EventArgs e)
@@ -53,23 +62,9 @@ public partial class EditImagePage : ContentPage
 
     private void OnBorderThicknessSliderValueChanged(object sender, ValueChangedEventArgs e)
     {
-
-    }
-
-    private void OnBorderThicknessEntryCompleted(object sender, EventArgs e)
-    {
-        if (sender is Entry entry && double.TryParse(entry.Text, out double value))
+        if (sender is Slider slider)
         {
-            if (value < BorderThicknessSlider.Minimum)
-            {
-                value = BorderThicknessSlider.Minimum;
-            }
-            else if (value > BorderThicknessSlider.Maximum)
-            {
-                value = BorderThicknessSlider.Maximum;
-            }
-
-            BorderThicknessSlider.Value = value;
+            PreviewFrame.Padding = new Thickness(slider.Value);
         }
     }
 
