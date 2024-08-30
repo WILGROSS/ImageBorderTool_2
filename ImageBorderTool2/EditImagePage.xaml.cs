@@ -1,10 +1,14 @@
+using SkiaSharp;
+
 namespace ImageBorderTool2;
 
 public partial class EditImagePage : ContentPage
 {
     private int _currentImage;
     private string _imagePath;
-    private int _defaultThickness = 12;
+    private int _imageWidth;
+    private int _imageHeight;
+    private int _defaultThickness = 2;
     private int _defaultRed = 255;
     private int _defaultGreen = 255;
     private int _defaultBlue = 255;
@@ -21,9 +25,18 @@ public partial class EditImagePage : ContentPage
             SetDefaultValues();
     }
 
-    private void SetCurrentImage()
+    private async Task<(int width, int height)> GetImageDimensionsAsync(string imagePath)
+    {
+        using var stream = File.OpenRead(imagePath);
+        var image = SKBitmap.Decode(stream);
+
+        return (image.Width, image.Height);
+    }
+
+    private async void SetCurrentImage()
     {
         CurrentImage.Source = _imagePath;
+        (_imageWidth, _imageHeight) = await GetImageDimensionsAsync(_imagePath);
     }
 
     private void SetDefaultValues()
@@ -64,6 +77,18 @@ public partial class EditImagePage : ContentPage
     {
         if (sender is Slider slider)
         {
+            if (_imageWidth > _imageHeight)
+            {
+                var padding = new Thickness(slider.Value, 0);
+                PreviewFrame.Padding = padding;
+                return;
+            }
+            else if ((_imageWidth < _imageHeight))
+            {
+                var padding = new Thickness(0, slider.Value);
+                PreviewFrame.Padding = padding;
+                return;
+            }
             PreviewFrame.Padding = new Thickness(slider.Value);
         }
     }
