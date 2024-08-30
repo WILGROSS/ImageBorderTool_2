@@ -81,8 +81,8 @@
 
                     <Border x:Name="PreviewFrame"
                            Grid.Column="0"
-                           WidthRequest="480"
-                            HeightRequest="480"
+                           WidthRequest="580"
+                            HeightRequest="580"
                            BackgroundColor="LightPink">
                         <Image x:Name="CurrentImage"
                                Aspect="AspectFit"
@@ -128,8 +128,8 @@
                                 <Label x:Name="BorderThicknessLabel"
                                         Grid.Column="4"
                                        HorizontalTextAlignment="End"
-                                        Text="{Binding Source={x:Reference BorderThicknessSlider}, Path=Value, StringFormat='{0:F0} px'}"
-                                        FontSize="16"
+                                       Text="{Binding Source={x:Reference BorderThicknessSlider}, Path=Value, Mode=OneWay, StringFormat='{0:F0} px'}"
+                                       FontSize="16"
                                         TextColor="{StaticResource PrimaryText}"/>
 
                             </Grid>
