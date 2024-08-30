@@ -72,12 +72,9 @@ public partial class EditImagePage : ContentPage
 			int.TryParse(parts[1], out int green) &&
 			int.TryParse(parts[2], out int blue))
 		{
-			// Ensure RGB values are within bounds
-			red = Math.Clamp(red, 0, 255);
-			green = Math.Clamp(green, 0, 255);
-			blue = Math.Clamp(blue, 0, 255);
+			if (red < 0 || red > 255 || green < 0 || green > 255 || blue < 0 || blue > 255)
+				return;
 
-			// Update sliders and color preview
 			RedSlider.Value = red;
 			GreenSlider.Value = green;
 			BlueSlider.Value = blue;
