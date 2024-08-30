@@ -3,6 +3,7 @@ namespace ImageBorderTool2;
 public partial class EditImagePage : ContentPage
 {
     private int _currentImage;
+    private string _imagePath;
     private int _defaultThickness = 12;
     private int _defaultRed = 255;
     private int _defaultGreen = 255;
@@ -12,9 +13,17 @@ public partial class EditImagePage : ContentPage
         InitializeComponent();
 
         _currentImage = currentImage;
+        _imagePath = imagePaths[_currentImage];
+
+        SetCurrentImage();
 
         if (currentImage == 0)
             SetDefaultValues();
+    }
+
+    private void SetCurrentImage()
+    {
+        CurrentImage.Source = _imagePath;
     }
 
     private void SetDefaultValues()
