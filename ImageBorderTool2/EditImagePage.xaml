@@ -107,7 +107,7 @@
                                     <ColumnDefinition Width="8" />
                                     <ColumnDefinition Width="200" />
                                     <ColumnDefinition Width="8" />
-                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="48" />
                                 </Grid.ColumnDefinitions>
                                 <Label Grid.Column="0"
                                        Text="Border Thickness"
@@ -127,7 +127,8 @@
 
                                 <Label x:Name="BorderThicknessLabel"
                                         Grid.Column="4"
-                                        Text="{Binding Source={x:Reference BorderThicknessSlider}, Path=Value, StringFormat='{0:F0}'}" 
+                                       HorizontalTextAlignment="End"
+                                        Text="{Binding Source={x:Reference BorderThicknessSlider}, Path=Value, StringFormat='{0:F0} px'}"
                                         FontSize="16"
                                         TextColor="{StaticResource PrimaryText}"/>
 
@@ -180,6 +181,7 @@
                                         ValueChanged="OnColorValueChanged" />
                                 <Label Grid.Row="2"
                                        Grid.Column="4"
+                                       HorizontalTextAlignment="End"
                                        Text="{Binding Source={x:Reference RedSlider}, Path=Value, StringFormat='{0:F0}'}"
                                        FontSize="16"
                                        TextColor="{StaticResource PrimaryText}" />
@@ -202,6 +204,7 @@
                                         ValueChanged="OnColorValueChanged" />
                                 <Label Grid.Row="4"
                                        Grid.Column="4"
+                                       HorizontalTextAlignment="End"
                                        Text="{Binding Source={x:Reference GreenSlider}, Path=Value, StringFormat='{0:F0}'}"
                                        FontSize="16"
                                        TextColor="{StaticResource PrimaryText}" />
@@ -224,10 +227,10 @@
                                         ValueChanged="OnColorValueChanged" />
                                 <Label Grid.Row="6"
                                        Grid.Column="4"
+                                       HorizontalTextAlignment="End"
                                        Text="{Binding Source={x:Reference BlueSlider}, Path=Value, StringFormat='{0:F0}'}" 
                                        FontSize="16"
                                        TextColor="{StaticResource PrimaryText}"/>
-
                             </Grid>
                         </Grid>
                     </Frame>
