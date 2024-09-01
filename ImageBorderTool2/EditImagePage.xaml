@@ -79,15 +79,22 @@
                         <ColumnDefinition Width="auto" />
                     </Grid.ColumnDefinitions>
 
-                    <Border x:Name="PreviewFrame"
-                           Grid.Column="0"
-                           WidthRequest="580"
-                            HeightRequest="580"
-                           BackgroundColor="LightPink">
-                        <Image x:Name="CurrentImage"
-                               Aspect="AspectFit"
-                               Source="dotnet_bot.png"/>
-                    </Border>
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="8" />
+                            <RowDefinition Height="auto" />
+                        </Grid.RowDefinitions>
+                        <Border x:Name="PreviewFrame"
+                                Grid.Row="0"
+                                WidthRequest="540"
+                                HeightRequest="540"
+                                BackgroundColor="LightPink">
+                            <Image x:Name="CurrentImage"
+                                   Aspect="AspectFit"
+                                   Source="dotnet_bot.png" />
+                        </Border>
+                    </Grid>
                     <Frame x:Name="Settings"
                            Grid.Column="2"
                            BackgroundColor="{StaticResource Primary}">
@@ -126,11 +133,11 @@
                                         ValueChanged="OnBorderThicknessSliderValueChanged" />
 
                                 <Label x:Name="BorderThicknessLabel"
-                                        Grid.Column="4"
+                                       Grid.Column="4"
                                        HorizontalTextAlignment="End"
                                        Text="{Binding Source={x:Reference BorderThicknessSlider}, Path=Value, Mode=OneWay, StringFormat='{0:F0} px'}"
                                        FontSize="16"
-                                        TextColor="{StaticResource PrimaryText}"/>
+                                       TextColor="{StaticResource PrimaryText}" />
 
                             </Grid>
 
@@ -157,17 +164,17 @@
                                 <BoxView x:Name="ColorPreview"
                                          Grid.Row="0"
                                          Grid.Column="2"
-                                         CornerRadius="4"/>
+                                         CornerRadius="4" />
                                 <Editor x:Name="ColorValueEntry"
-                                       Grid.Row="0"
-                                       Grid.Column="0"
-                                       WidthRequest="95"
-                                       HorizontalTextAlignment="Start"
-                                       HorizontalOptions="Fill"
-                                       BackgroundColor="{StaticResource Secondary}"
-                                       TextColor="{StaticResource PrimaryText}"
-                                       FontFamily="monospace"
-                                       TextChanged="OnColorValueEntryTextChanged" />
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        WidthRequest="95"
+                                        HorizontalTextAlignment="Start"
+                                        HorizontalOptions="Fill"
+                                        BackgroundColor="{StaticResource Secondary}"
+                                        TextColor="{StaticResource PrimaryText}"
+                                        FontFamily="monospace"
+                                        TextChanged="OnColorValueEntryTextChanged" />
 
                                 <Label Grid.Row="2"
                                        Grid.Column="0"
@@ -237,16 +244,64 @@
                                        Grid.Row="6"
                                        Grid.Column="4"
                                        HorizontalTextAlignment="End"
-                                       Text="{Binding Source={x:Reference BlueSlider}, Path=Value, StringFormat='{0:F0}'}" 
+                                       Text="{Binding Source={x:Reference BlueSlider}, Path=Value, StringFormat='{0:F0}'}"
                                        FontSize="16"
-                                       TextColor="{StaticResource PrimaryText}"/>
+                                       TextColor="{StaticResource PrimaryText}" />
                             </Grid>
                         </Grid>
                     </Frame>
                 </Grid>
             </Frame>
+            <Grid Grid.Row="4"
+                  Grid.Column="1"
+                  HorizontalOptions="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="8" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+                <Button x:Name="PreviousPictureButton"
+                        Grid.Column="0"
+                        BackgroundColor="{StaticResource Accent}"
+                        TextColor="{StaticResource PrimaryText}"
+                        Text="&lt;"
+                        Padding="8"
+                        CornerRadius="50"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        Clicked="PreviousPictureButtonClicked" />
+                <Button x:Name="NextPictureButton"
+                        Grid.Column="2"
+                        BackgroundColor="{StaticResource Accent}"
+                        TextColor="{StaticResource PrimaryText}"
+                        Text=">"
+                        Padding="8"
+                        CornerRadius="50"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        Clicked="NextPictureButtonClicked" />
 
+                <Button x:Name="FakePreviousPictureButton"
+                        Grid.Column="0"
+                        BackgroundColor="{StaticResource Secondary}"
+                        TextColor="{StaticResource SecondaryText}"
+                        Text="&lt;"
+                        Padding="8"
+                        CornerRadius="50"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        IsVisible="False" />
+                <Button x:Name="FakeNextPictureButton"
+                        Grid.Column="2"
+                        BackgroundColor="{StaticResource Secondary}"
+                        TextColor="{StaticResource Secondary}"
+                        Text=">"
+                        Padding="8"
+                        CornerRadius="50"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        IsVisible="False" />
+            </Grid>
         </Grid>
-
     </VerticalStackLayout>
 </ContentPage>

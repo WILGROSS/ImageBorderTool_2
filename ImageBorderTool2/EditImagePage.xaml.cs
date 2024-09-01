@@ -4,26 +4,34 @@ namespace ImageBorderTool2;
 
 public partial class EditImagePage : ContentPage
 {
-	private int _currentImage;
+	private int _currentImageNumber;
+	private List<string> _imagePaths;
 	private string _imagePath;
 	private int _imageWidth;
 	private int _imageHeight;
-	private int _defaultThickness = 2;
-	private int _defaultRed = 255;
-	private int _defaultGreen = 255;
-	private int _defaultBlue = 255;
 
-	public EditImagePage(List<string> imagePaths, int currentImage)
+	private int _currentRed;
+	private int _currentGreen;
+	private int _currentBlue;
+	private int _currentBorderThickness;
+
+	public EditImagePage(List<string> imagePaths, int currentImageNumber, int currentBorderThickness, int red, int green, int blue)
 	{
 		InitializeComponent();
 
-		_currentImage = currentImage;
-		_imagePath = imagePaths[_currentImage];
+		_currentImageNumber = currentImageNumber;
+		_imagePaths = imagePaths;
+		_imagePath = _imagePaths[_currentImageNumber];
+
+		_currentBorderThickness = currentBorderThickness;
+
+		_currentRed = red;
+		_currentGreen = green;
+		_currentBlue = blue;
 
 		SetCurrentImage();
-
-		if (currentImage == 0)
-			SetDefaultValues();
+		SetupNavigationButtons();
+		SetupPage();
 	}
 
 	private async Task<(int width, int height)> GetImageDimensionsAsync(string imagePath)
@@ -39,21 +47,35 @@ public partial class EditImagePage : ContentPage
 		CurrentImage.Source = _imagePath;
 		(_imageWidth, _imageHeight) = await GetImageDimensionsAsync(_imagePath);
 	}
-
-	private void SetDefaultValues()
+	private async void SetupPage()
 	{
-		BorderThicknessSlider.Value = _defaultThickness;
-		BorderThicknessLabel.Text = $"{_defaultThickness} px";
-		PreviewFrame.Padding = new Thickness(_defaultThickness);
+		BorderThicknessSlider.Value = _currentBorderThickness;
+		BorderThicknessLabel.Text = $"{_currentBorderThickness} px";
+		PreviewFrame.Padding = new Thickness(_currentBorderThickness);
 
-		RedSlider.Value = _defaultRed;
-		GreenSlider.Value = _defaultGreen;
-		BlueSlider.Value = _defaultBlue;
+		RedSlider.Value = _currentRed;
+		GreenSlider.Value = _currentGreen;
+		BlueSlider.Value = _currentBlue;
 
-		ColorPreview.Color = Color.FromRgb(_defaultRed, _defaultGreen, _defaultBlue);
+		ColorPreview.Color = Color.FromRgb(_currentRed, _currentGreen, _currentBlue);
 		PreviewFrame.BackgroundColor = ColorPreview.Color;
 
 		UpdateColorValueEntry();
+	}
+
+	private void SetupNavigationButtons()
+	{
+		if (_imagePath == _imagePaths.First())
+		{
+			PreviousPictureButton.IsVisible = false;
+			FakePreviousPictureButton.IsVisible = true;
+		}
+
+		if (_imagePath == _imagePaths.Last())
+		{
+			NextPictureButton.IsVisible = false;
+			FakeNextPictureButton.IsVisible = true;
+		}
 	}
 
 	private void UpdateColorValueEntry()
@@ -75,22 +97,22 @@ public partial class EditImagePage : ContentPage
 			if (red < 0 || red > 255 || green < 0 || green > 255 || blue < 0 || blue > 255)
 				return;
 
-			RedSlider.Value = red;
-			GreenSlider.Value = green;
-			BlueSlider.Value = blue;
+			SetColors(red, green, blue);
 
-			ColorPreview.Color = Color.FromRgb(red, green, blue);
+			RedSlider.Value = _currentRed;
+			GreenSlider.Value = _currentGreen;
+			BlueSlider.Value = _currentBlue;
+
+			ColorPreview.Color = new Color(_currentRed, _currentGreen, _currentBlue);
 			PreviewFrame.BackgroundColor = ColorPreview.Color;
 		}
 	}
 
 	private void OnColorValueSliderChanged(object sender, ValueChangedEventArgs e)
 	{
-		int red = (int)RedSlider.Value;
-		int green = (int)GreenSlider.Value;
-		int blue = (int)BlueSlider.Value;
+		SetColors((int)RedSlider.Value, (int)GreenSlider.Value, (int)BlueSlider.Value);
 
-		ColorPreview.Color = Color.FromRgb(red, green, blue);
+		ColorPreview.Color = new Color(_currentRed, _currentGreen, _currentBlue);
 		PreviewFrame.BackgroundColor = ColorPreview.Color;
 
 		UpdateColorValueEntry();
@@ -100,21 +122,22 @@ public partial class EditImagePage : ContentPage
 	{
 		if (sender is Slider slider)
 		{
-			BorderThicknessLabel.Text = $"{slider.Value:F0} px";
+			_currentBorderThickness = (int)slider.Value;
+			BorderThicknessLabel.Text = $"{_currentBorderThickness:F0} px";
 
 			if (_imageWidth > _imageHeight)
 			{
-				var padding = new Thickness(slider.Value, 0);
+				var padding = new Thickness(_currentBorderThickness, 0);
 				PreviewFrame.Padding = padding;
 			}
 			else if (_imageWidth < _imageHeight)
 			{
-				var padding = new Thickness(0, slider.Value);
+				var padding = new Thickness(0, _currentBorderThickness);
 				PreviewFrame.Padding = padding;
 			}
 			else
 			{
-				PreviewFrame.Padding = new Thickness(slider.Value);
+				PreviewFrame.Padding = new Thickness(_currentBorderThickness);
 			}
 		}
 	}
@@ -132,5 +155,16 @@ public partial class EditImagePage : ContentPage
 	private void OnExitClicked(object sender, EventArgs e)
 	{
 		Application.Current.Quit();
+	}
+
+	private async void PreviousPictureButtonClicked(object sender, EventArgs e)
+	{
+		_currentImageNumber--;
+		await Navigation.PushAsync(new EditImagePage(_imagePaths, _currentImageNumber, _currentBorderThickness, _currentRed, _currentGreen, _currentBlue));
+	}
+	private async void NextPictureButtonClicked(object sender, EventArgs e)
+	{
+		_currentImageNumber++;
+		await Navigation.PushAsync(new EditImagePage(_imagePaths, _currentImageNumber, _currentBorderThickness, _currentRed, _currentGreen, _currentBlue));
 	}
 }
