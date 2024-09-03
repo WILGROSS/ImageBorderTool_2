@@ -34,8 +34,6 @@
                     <ColumnDefinition Width="auto" />
                     <ColumnDefinition Width="8" />
                     <ColumnDefinition Width="auto" />
-                    <ColumnDefinition Width="8" />
-                    <ColumnDefinition Width="auto" />
                 </Grid.ColumnDefinitions>
 
                 <Button x:Name="HomeButton"
@@ -49,15 +47,6 @@
                         HorizontalOptions="Start" />
 
                 <Button Grid.Column="2"
-                        Text="Export Images"
-                        CornerRadius="4"
-                        FontSize="16"
-                        BackgroundColor="{StaticResource Accent}"
-                        TextColor="{StaticResource PrimaryText}"
-                        Clicked="OnExportImagesClicked"
-                        HorizontalOptions="End" />
-
-                <Button Grid.Column="4"
                         Text="Exit"
                         CornerRadius="4"
                         FontSize="16"
@@ -98,6 +87,7 @@
                     </Grid>
                     <Frame x:Name="Settings"
                            Grid.Column="2"
+                           Padding="8"
                            BackgroundColor="{StaticResource Primary}">
                         <Grid BackgroundColor="{StaticResource Primary}">
                             <Grid.RowDefinitions>
@@ -105,6 +95,8 @@
                                 <RowDefinition Height="32" />
                                 <RowDefinition Height="auto" />
                                 <RowDefinition Height="8" />
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="*" />
                                 <RowDefinition Height="auto" />
                             </Grid.RowDefinitions>
 
@@ -249,6 +241,35 @@
                                        FontSize="16"
                                        TextColor="{StaticResource PrimaryText}" />
                             </Grid>
+
+                            <Grid x:Name="Buttons"
+                                  Grid.Row="6"
+                                  HorizontalOptions="End"
+                                  VerticalOptions="End">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"/>
+                                    <ColumnDefinition Width="8"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Button Grid.Column="3"
+                                        Text="Export Images"
+                                        CornerRadius="4"
+                                        FontSize="16"
+                                        BackgroundColor="{StaticResource Accent}"
+                                        TextColor="{StaticResource PrimaryText}"
+                                        Clicked="OnExportImageClicked"
+                                        HorizontalOptions="End" />
+
+                                <Button Grid.Column="0"
+                                        Text="Export Location..."
+                                        CornerRadius="4"
+                                        FontSize="16"
+                                        BackgroundColor="{StaticResource Secondary}"
+                                        TextColor="{StaticResource PrimaryText}"
+                                        Clicked="OnExportLocationClicked"
+                                        HorizontalOptions="End" />
+                            </Grid>
                         </Grid>
                     </Frame>
                 </Grid>
@@ -266,7 +287,8 @@
                         BackgroundColor="{StaticResource Accent}"
                         TextColor="{StaticResource PrimaryText}"
                         Text="&lt;"
-                        Padding="8"
+                        FontSize="16"
+                        Padding="12, 8"
                         CornerRadius="50"
                         HorizontalOptions="Center"
                         VerticalOptions="Center"
@@ -276,7 +298,8 @@
                         BackgroundColor="{StaticResource Accent}"
                         TextColor="{StaticResource PrimaryText}"
                         Text=">"
-                        Padding="8"
+                        FontSize="16"
+                        Padding="12, 8"
                         CornerRadius="50"
                         HorizontalOptions="Center"
                         VerticalOptions="Center"
@@ -285,9 +308,10 @@
                 <Button x:Name="FakePreviousPictureButton"
                         Grid.Column="0"
                         BackgroundColor="{StaticResource Secondary}"
-                        TextColor="{StaticResource SecondaryText}"
+                        TextColor="{StaticResource Gray600}"
                         Text="&lt;"
-                        Padding="8"
+                        FontSize="16"
+                        Padding="12, 8"
                         CornerRadius="50"
                         HorizontalOptions="Center"
                         VerticalOptions="Center"
@@ -295,9 +319,10 @@
                 <Button x:Name="FakeNextPictureButton"
                         Grid.Column="2"
                         BackgroundColor="{StaticResource Secondary}"
-                        TextColor="{StaticResource Secondary}"
+                        TextColor="{StaticResource Gray600}"
                         Text=">"
-                        Padding="8"
+                        FontSize="16"
+                        Padding="12, 8"
                         CornerRadius="50"
                         HorizontalOptions="Center"
                         VerticalOptions="Center"
