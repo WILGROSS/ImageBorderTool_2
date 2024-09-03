@@ -141,8 +141,7 @@
 
         private async void OnContinueClicked(object sender, EventArgs e)
         {
-            var defaultColor = new Color(255, 255, 255);
-            await Navigation.PushAsync(new EditImagePage(_selectedImagePaths, 0, 10, defaultColor));
+            await Navigation.PushAsync(new EditImagePage(_selectedImagePaths, 0, 0, new Color(255, 255, 255)));
         }
     }
 }
