@@ -1,6 +1,5 @@
 using CommunityToolkit.Maui.Core.Extensions;
 using SkiaSharp;
-using System.Diagnostics;
 
 namespace ImageBorderTool2;
 
@@ -14,144 +13,138 @@ public partial class EditImagePage : ContentPage
     private bool _setupComplete;
 
     private Color _currentColor;
-    private Color _debugColor;
     private int _currentBorderThickness;
 
     public EditImagePage(List<string> imagePaths, int currentImageNumber, int currentBorderThickness, Color currentColor)
     {
         InitializeComponent();
 
-        _setupComplete = false;
         _currentImageNumber = currentImageNumber;
         _imagePaths = imagePaths;
         _imagePath = _imagePaths[_currentImageNumber];
-
         _currentBorderThickness = currentBorderThickness;
-
         _currentColor = currentColor;
-        _debugColor = _currentColor;
 
-        SetCurrentImage();
+        InitializePage();
+    }
+
+    private async void InitializePage()
+    {
+        await SetCurrentImage();
         SetupNavigationButtons();
         SetupPage();
-        SetColorsToPage();
+        UpdateUI();
         _setupComplete = true;
+    }
+
+    private async Task SetCurrentImage()
+    {
+        CurrentImage.Source = _imagePath;
+        (_imageWidth, _imageHeight) = await GetImageDimensionsAsync(_imagePath);
     }
 
     private async Task<(int width, int height)> GetImageDimensionsAsync(string imagePath)
     {
         using var stream = File.OpenRead(imagePath);
         var image = SKBitmap.Decode(stream);
-
         return (image.Width, image.Height);
     }
 
-    private async void SetCurrentImage()
-    {
-        CurrentImage.Source = _imagePath;
-        (_imageWidth, _imageHeight) = await GetImageDimensionsAsync(_imagePath);
-    }
-    private async void SetupPage()
+    private void SetupPage()
     {
         BorderThicknessSlider.Value = _currentBorderThickness;
         BorderThicknessLabel.Text = $"{_currentBorderThickness} px";
-        PreviewFrame.Padding = new Thickness(_currentBorderThickness);
+        UpdatePreviewPadding();
 
         RedSlider.Value = _currentColor.GetByteRed();
         GreenSlider.Value = _currentColor.GetByteGreen();
         BlueSlider.Value = _currentColor.GetByteBlue();
 
-        ColorValueEntry.Text = $"{_currentColor.GetByteRed()},{_currentColor.GetByteGreen()},{_currentColor.GetByteBlue()}";
+        UpdateColorValueEntry();
     }
 
-    private void SetColorsToPage()
+    private void SetupNavigationButtons()
+    {
+        PreviousPictureButton.IsVisible = _currentImageNumber > 0;
+        FakePreviousPictureButton.IsVisible = _currentImageNumber == 0;
+
+        NextPictureButton.IsVisible = _currentImageNumber < _imagePaths.Count - 1;
+        FakeNextPictureButton.IsVisible = _currentImageNumber == _imagePaths.Count - 1;
+    }
+
+    private void UpdateUI()
     {
         ColorPreview.Color = _currentColor;
         PreviewFrame.BackgroundColor = _currentColor;
     }
 
-    private void SetupNavigationButtons()
+    private void UpdateColorValueEntry()
     {
-        if (_imagePath == _imagePaths.First())
+        if (_setupComplete)
         {
-            PreviousPictureButton.IsVisible = false;
-            FakePreviousPictureButton.IsVisible = true;
-        }
-
-        if (_imagePath == _imagePaths.Last())
-        {
-            NextPictureButton.IsVisible = false;
-            FakeNextPictureButton.IsVisible = true;
+            ColorValueEntry.Text = $"{(int)RedSlider.Value},{(int)GreenSlider.Value},{(int)BlueSlider.Value}";
         }
     }
 
-    private void UpdateColorValueEntry()
+    private void UpdatePreviewPadding()
     {
-        if (!_setupComplete)
-            return;
-
-        ColorValueEntry.Text = $"{(int)RedSlider.Value},{(int)GreenSlider.Value},{(int)BlueSlider.Value}";
+        PreviewFrame.Padding = _imageWidth == _imageHeight
+            ? new Thickness(_currentBorderThickness)
+            : _imageWidth > _imageHeight
+                ? new Thickness(_currentBorderThickness, 0)
+                : new Thickness(0, _currentBorderThickness);
     }
 
     private void OnColorValueEntryTextChanged(object sender, TextChangedEventArgs e)
     {
-        if (!_setupComplete)
-            return;
-
-        if (string.IsNullOrWhiteSpace(e.NewTextValue))
-            return;
-
-        var parts = e.NewTextValue.Split(',');
-        if (parts.Length == 3 &&
-            int.TryParse(parts[0], out int red) &&
-            int.TryParse(parts[1], out int green) &&
-            int.TryParse(parts[2], out int blue))
+        if (_setupComplete && ParseColorEntry(e.NewTextValue, out var newColor))
         {
-            if (red < 0 || red > 255 || green < 0 || green > 255 || blue < 0 || blue > 255)
-                return;
-
-            RedSlider.Value = red;
-            GreenSlider.Value = green;
-            BlueSlider.Value = blue;
-
-            _currentColor = new Color(red, green, blue);
-            SetColorsToPage();
+            _currentColor = newColor;
+            UpdateUI();
         }
     }
 
+    private bool ParseColorEntry(string colorText, out Color color)
+    {
+        color = default;
+        var parts = colorText?.Split(',');
+        if (parts?.Length == 3 &&
+            int.TryParse(parts[0], out int red) &&
+            int.TryParse(parts[1], out int green) &&
+            int.TryParse(parts[2], out int blue) &&
+            IsValidColorValue(red) && IsValidColorValue(green) && IsValidColorValue(blue))
+        {
+            color = new Color(red, green, blue);
+            return true;
+        }
+        return false;
+    }
+
+    private bool IsValidColorValue(int value) => value >= 0 && value <= 255;
+
     private void OnColorValueSliderChanged(object sender, ValueChangedEventArgs e)
     {
-        if (!_setupComplete)
-            return;
-
-        _currentColor = _currentColor = new Color((int)RedSlider.Value, (int)GreenSlider.Value, (int)BlueSlider.Value);
-
-        UpdateColorValueEntry();
-        SetColorsToPage();
+        if (_setupComplete)
+        {
+            _currentColor = new Color((int)RedSlider.Value, (int)GreenSlider.Value, (int)BlueSlider.Value);
+            UpdateColorValueEntry();
+            UpdateUI();
+        }
     }
 
     private void OnBorderThicknessSliderValueChanged(object sender, ValueChangedEventArgs e)
     {
-        if (sender is Slider slider)
+        if (_setupComplete && sender is Slider slider)
         {
             _currentBorderThickness = (int)slider.Value;
             BorderThicknessLabel.Text = $"{_currentBorderThickness:F0} px";
-
-            if (_imageWidth > _imageHeight)
-            {
-                var padding = new Thickness(_currentBorderThickness, 0);
-                PreviewFrame.Padding = padding;
-            }
-            else if (_imageWidth < _imageHeight)
-            {
-                var padding = new Thickness(0, _currentBorderThickness);
-                PreviewFrame.Padding = padding;
-            }
-            else
-            {
-                PreviewFrame.Padding = new Thickness(_currentBorderThickness);
-            }
+            UpdatePreviewPadding();
         }
+    }
+
+    private async void NavigateToPage(int newImageNumber)
+    {
+        await Navigation.PushAsync(new EditImagePage(_imagePaths, newImageNumber, _currentBorderThickness, _currentColor));
     }
 
     private async void OnHomeClicked(object sender, EventArgs e)
@@ -159,24 +152,11 @@ public partial class EditImagePage : ContentPage
         await Navigation.PushAsync(new MainPage());
     }
 
-    private void OnExportImagesClicked(object sender, EventArgs e)
-    {
+    private void OnExportImagesClicked(object sender, EventArgs e) { /* Implement export functionality here */ }
 
-    }
+    private void OnExitClicked(object sender, EventArgs e) => Application.Current.Quit();
 
-    private void OnExitClicked(object sender, EventArgs e)
-    {
-        Application.Current.Quit();
-    }
+    private void PreviousPictureButtonClicked(object sender, EventArgs e) => NavigateToPage(_currentImageNumber - 1);
 
-    private async void PreviousPictureButtonClicked(object sender, EventArgs e)
-    {
-        _currentImageNumber--;
-        await Navigation.PushAsync(new EditImagePage(_imagePaths, _currentImageNumber, _currentBorderThickness, _currentColor));
-    }
-    private async void NextPictureButtonClicked(object sender, EventArgs e)
-    {
-        _currentImageNumber++;
-        await Navigation.PushAsync(new EditImagePage(_imagePaths, _currentImageNumber, _currentBorderThickness, _currentColor));
-    }
+    private void NextPictureButtonClicked(object sender, EventArgs e) => NavigateToPage(_currentImageNumber + 1);
 }
