@@ -89,7 +89,8 @@
                                 Grid.Row="0"
                                 WidthRequest="540"
                                 HeightRequest="540"
-                                BackgroundColor="LightPink">
+                                BackgroundColor="LightPink"
+                                StrokeThickness="0">
                             <Image x:Name="CurrentImage"
                                    Aspect="AspectFit"
                                    Source="dotnet_bot.png" />
