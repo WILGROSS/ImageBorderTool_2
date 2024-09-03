@@ -60,7 +60,7 @@ public partial class EditImagePage : ContentPage
         GreenSlider.Value = _currentColor.GetByteGreen();
         BlueSlider.Value = _currentColor.GetByteBlue();
 
-        UpdateColorValueEntry();
+        ColorValueEntry.Text = $"{(int)RedSlider.Value},{(int)GreenSlider.Value},{(int)BlueSlider.Value}";
     }
 
     private void SetupNavigationButtons()
