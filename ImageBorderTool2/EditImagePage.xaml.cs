@@ -157,7 +157,10 @@ public partial class EditImagePage : ContentPage
 		await Navigation.PushAsync(new MainPage());
 	}
 
-	private void OnExportImageClicked(object sender, EventArgs e) { /* Implement export functionality here */ }
+	private void OnExportImageClicked(object sender, EventArgs e)
+	{
+
+	}
 
 	private void OnExitClicked(object sender, EventArgs e) => Application.Current.Quit();
 
