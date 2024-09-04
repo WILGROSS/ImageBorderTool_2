@@ -8,6 +8,7 @@ public partial class EditImagePage : ContentPage
 	private int _currentImageNumber;
 	private List<string> _imagePaths;
 	private string _imagePath;
+	private string _exportDirectoryPath;
 	private int _imageWidth;
 	private int _imageHeight;
 	private bool _setupComplete;
@@ -22,6 +23,10 @@ public partial class EditImagePage : ContentPage
 		_currentImageNumber = currentImageNumber;
 		_imagePaths = imagePaths;
 		_imagePath = _imagePaths[_currentImageNumber];
+
+		string directory = Path.GetDirectoryName(_imagePath);
+		_exportDirectoryPath = Path.Combine(directory, "BorderTool");
+
 		_currentBorderThickness = currentBorderThickness;
 		_currentColor = currentColor;
 
@@ -159,11 +164,6 @@ public partial class EditImagePage : ContentPage
 	private void PreviousPictureButtonClicked(object sender, EventArgs e) => NavigateToPage(_currentImageNumber - 1);
 
 	private void NextPictureButtonClicked(object sender, EventArgs e) => NavigateToPage(_currentImageNumber + 1);
-
-	private void OnExportLocationClicked(object sender, EventArgs e)
-	{
-
-	}
 
 	private void OnSizeCheckBoxChanged(object sender, CheckedChangedEventArgs e)
 	{
