@@ -7,48 +7,42 @@ namespace ImageBorderTool
 	public class ImageProcessor
 	{
 		private int _borderThickness;
-		private Color color;
-		public void Run(string imagePath, int borderThickness, Color color)
+		private SixLabors.ImageSharp.Color _selectedColor;
+		public void Run(string imagePath, int borderThickness, Color color, bool fullSize, bool webSize)
 		{
 			string directory = Path.GetDirectoryName(imagePath);
 			string borderToolDirectory = Path.Combine(directory, "BorderTool");
 			Directory.CreateDirectory(borderToolDirectory);
+
+			_borderThickness = borderThickness;
+			byte red;
+			byte green;
+			byte blue;
+			color.ToRgb(out red, out green, out blue);
+
+			_selectedColor = SixLabors.ImageSharp.Color.FromRgb(red, green, blue);
 
 			string filenameWithoutExtension = Path.GetFileNameWithoutExtension(imagePath);
 			string extension = Path.GetExtension(imagePath);
 			string fullSizeOutputPath = Path.Combine(borderToolDirectory, $"{filenameWithoutExtension}_FullSize{extension}");
 			string webSizeOutputPath = Path.Combine(borderToolDirectory, $"{filenameWithoutExtension}_WebSize{extension}");
 
-			ResizeImageToSquare(imagePath, fullSizeOutputPath, null);
-			ResizeImageToSquare(imagePath, webSizeOutputPath, 600);
-		}
-
-		private bool IsImage(string filepath)
-		{
-			try
-			{
-				using (System.Drawing.Image img = System.Drawing.Image.FromFile(filepath))
-				{
-					return true;
-				}
-			}
-			catch
-			{
-				return false;
-			}
+			if (fullSize)
+				ResizeImageToSquare(imagePath, fullSizeOutputPath, null);
+			if (webSize)
+				ResizeImageToSquare(imagePath, webSizeOutputPath, 600);
 		}
 
 		private void ResizeImageToSquare(string inputImagePath, string outputImagePath, int? outputSize)
 		{
 			using (SixLabors.ImageSharp.Image image = SixLabors.ImageSharp.Image.Load(inputImagePath))
 			{
-				int size = Math.Max(image.Width, image.Height);
+				int size = Math.Max(image.Width, image.Height) + _borderThickness;
 
-				//Remove +12's if you don't want the fine white line around the edges
-				using (Image<Rgba32> squareImage = new Image<Rgba32>(Configuration.Default, size + 12, size + 12, SixLabors.ImageSharp.Color.White))
+				using (Image<Rgba32> squareImage = new Image<Rgba32>(Configuration.Default, size, size, _selectedColor))
 				{
-					int x = (size + 12 - image.Width) / 2;
-					int y = (size + 12 - image.Height) / 2;
+					int x = (size - image.Width) / 2;
+					int y = (size - image.Height) / 2;
 
 					squareImage.Mutate(ctx => ctx.DrawImage(image, new SixLabors.ImageSharp.Point(x, y), 1f));
 					if (outputSize != null)
