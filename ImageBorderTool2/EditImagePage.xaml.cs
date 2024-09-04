@@ -1,4 +1,5 @@
 using CommunityToolkit.Maui.Core.Extensions;
+using ImageBorderTool;
 using SkiaSharp;
 
 namespace ImageBorderTool2;
@@ -159,7 +160,11 @@ public partial class EditImagePage : ContentPage
 
 	private void OnExportImageClicked(object sender, EventArgs e)
 	{
-
+		if (FullSizeCheckBox.IsChecked || WebSizeCheckBox.IsChecked)
+		{
+			var imageProcessor = new ImageProcessor();
+			imageProcessor.ExportImage(_imagePath, _currentBorderThickness, _currentColor, FullSizeCheckBox.IsChecked, WebSizeCheckBox.IsChecked);
+		}
 	}
 
 	private void OnExitClicked(object sender, EventArgs e) => Application.Current.Quit();

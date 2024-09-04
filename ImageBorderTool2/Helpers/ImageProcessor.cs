@@ -8,13 +8,13 @@ namespace ImageBorderTool
 	{
 		private int _borderThickness;
 		private SixLabors.ImageSharp.Color _selectedColor;
-		public void Run(string imagePath, int borderThickness, Color color, bool fullSize, bool webSize)
+		public void ExportImage(string imagePath, int borderThickness, Color color, bool fullSize, bool webSize)
 		{
 			string directory = Path.GetDirectoryName(imagePath);
 			string borderToolDirectory = Path.Combine(directory, "BorderTool");
 			Directory.CreateDirectory(borderToolDirectory);
 
-			_borderThickness = borderThickness;
+			_borderThickness = borderThickness * 2;
 			byte red;
 			byte green;
 			byte blue;
@@ -37,12 +37,12 @@ namespace ImageBorderTool
 		{
 			using (SixLabors.ImageSharp.Image image = SixLabors.ImageSharp.Image.Load(inputImagePath))
 			{
-				int size = Math.Max(image.Width, image.Height) + _borderThickness;
+				int size = Math.Max(image.Width, image.Height);
 
-				using (Image<Rgba32> squareImage = new Image<Rgba32>(Configuration.Default, size, size, _selectedColor))
+				using (Image<Rgba32> squareImage = new Image<Rgba32>(Configuration.Default, size + _borderThickness, size + _borderThickness, _selectedColor))
 				{
-					int x = (size - image.Width) / 2;
-					int y = (size - image.Height) / 2;
+					int x = (size + _borderThickness - image.Width) / 2;
+					int y = (size + _borderThickness - image.Height) / 2;
 
 					squareImage.Mutate(ctx => ctx.DrawImage(image, new SixLabors.ImageSharp.Point(x, y), 1f));
 					if (outputSize != null)
